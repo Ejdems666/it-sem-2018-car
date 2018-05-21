@@ -17,9 +17,9 @@ void setup() {
   pinMode(photoSensor, INPUT);
   Serial.begin(9600);
   stepper1.setMaxSpeed(1000);
-  stepper1.setSpeed(500); //Right motor going forward in negative.
+  stepper1.setSpeed(500);
   
-}//--(end setup )---
+}
 
 void loop() {
   stepper1.runSpeed();
