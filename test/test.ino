@@ -2,10 +2,10 @@
 #define HALFSTEP 8
 
 // Motor pin definitions
-int motorPin1 = 5;     // IN1 on the ULN2003 driver 1
-int motorPin2 = 6;    // IN2 on the ULN2003 driver 1
-int motorPin3 = 9;     // IN3 on the ULN2003 driver 1
-int motorPin4 = 10;     // IN4 on the ULN2003 driver 1
+#define motorPin1 5    // IN1 on the ULN2003 driver 1
+#define motorPin2 6    // IN2 on the ULN2003 driver 1
+#define motorPin3 9     // IN3 on the ULN2003 driver 1
+#define motorPin4 10     // IN4 on the ULN2003 driver 1
 
 int photoSensor = A5;
 
