@@ -30,8 +30,8 @@ bool sendByte(uint8_t data)
   return true;
 }
 
-const int SPEED = 500;
-const float deccelerateSpeed = 0.5;
+const int SPEED = 150;
+const float deccelerateSpeed = -0.5;
 void OnDataIn(uint8_t data)
 {
   Serial.println(data);
@@ -74,12 +74,13 @@ ByteTransfer bt(inPin, dataPin, outPin, OnDataIn, OnDataOut);
 void setup()
 {
   waitingToWrite = false;
-//  delay(10000);
+  delay(5000);
   Serial.begin(9600);
   Serial.println("done waiting");
   bt.Initialize();
   stepperL.setMaxSpeed(1000);  
   stepperR.setMaxSpeed(1000); 
+  goStraight();
 }
 
 void loop()
@@ -95,8 +96,8 @@ void goStraight() {
 }
 
 void turnRight() {
-  stepperL.setSpeed(SPEED);
-  stepperR.setSpeed(-SPEED * deccelerateSpeed);
+  stepperR.setSpeed(-SPEED);
+  stepperL.setSpeed(SPEED * deccelerateSpeed);
 }
 
 void turnLeft() {
