@@ -1,12 +1,3 @@
-/
-/*  Remote control of two stepper motors
- *  
- *    0 - Stop both motors
- *    1 - Both motors forward
- *    2 - Both motors backward
- *    3 - Turn left
- *    4 - Turn right
- */
 #include <AccelStepper.h>
 #include <ByteTransfer.h>
 
@@ -18,16 +9,18 @@ const int motorBPin1 = 6;
 const int motorBPin2 = 7;
 const int motorBPin3 = 8;
 const int motorBPin4 = 9;
+
 // initialize the stepper library:
 AccelStepper stepperL(AccelStepper::FULL4WIRE, motorAPin1, motorAPin3, motorAPin2, motorAPin4);
 AccelStepper stepperR(AccelStepper::FULL4WIRE, motorBPin1, motorBPin3, motorBPin2, motorBPin4);
 
-const int inPin = 13;
+const int inPin = 11;
 const int dataPin = 12;
-const int outPin = 11;
+const int outPin = 13;
 
 uint8_t outData;
 boolean waitingToWrite;
+
 
 bool sendByte(uint8_t data)
 {
@@ -37,10 +30,12 @@ bool sendByte(uint8_t data)
   return true;
 }
 
+const int SPEED = 500;
+const float deccelerateSpeed = 0.5;
 void OnDataIn(uint8_t data)
 {
-  Serial.println(state);
-  switch(state) {
+  Serial.println(data);
+  switch(data) {
         case 1:
           goStraight();
           sendByte(0);
@@ -56,7 +51,7 @@ void OnDataIn(uint8_t data)
         default:
           stepperL.setSpeed(0);
           stepperR.setSpeed(0);
-          sendByte(1);
+//          sendByte(1);
           break;
       }
 }
@@ -79,7 +74,9 @@ ByteTransfer bt(inPin, dataPin, outPin, OnDataIn, OnDataOut);
 void setup()
 {
   waitingToWrite = false;
-  delay(10000);
+//  delay(10000);
+  Serial.begin(9600);
+  Serial.println("done waiting");
   bt.Initialize();
   stepperL.setMaxSpeed(1000);  
   stepperR.setMaxSpeed(1000); 
