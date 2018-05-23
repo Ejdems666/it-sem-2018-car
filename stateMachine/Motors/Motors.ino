@@ -14,13 +14,14 @@ const int motorBPin4 = 9;
 AccelStepper stepperL(AccelStepper::FULL4WIRE, motorAPin1, motorAPin3, motorAPin2, motorAPin4);
 AccelStepper stepperR(AccelStepper::FULL4WIRE, motorBPin1, motorBPin3, motorBPin2, motorBPin4);
 
+const int stepsPrFullTurn = 3000;
+
 const int inPin = 11;
 const int dataPin = 12;
 const int outPin = 13;
 
 uint8_t outData;
 boolean waitingToWrite;
-
 
 bool sendByte(uint8_t data)
 {
@@ -46,6 +47,14 @@ void OnDataIn(uint8_t data)
           break;
         case 3:
           turnLeft();
+          sendByte(0);
+          break;
+        case 4:
+          turnLeft90deg();
+          sendByte(0);
+          break;
+        case 5:
+          turnRight90deg();
           sendByte(0);
           break;
         default:
@@ -74,13 +83,13 @@ ByteTransfer bt(inPin, dataPin, outPin, OnDataIn, OnDataOut);
 void setup()
 {
   waitingToWrite = false;
-  delay(5000);
+//  delay(5000);
   Serial.begin(9600);
   Serial.println("done waiting");
   bt.Initialize();
   stepperL.setMaxSpeed(1000);  
   stepperR.setMaxSpeed(1000); 
-  goStraight();
+  turnLeft90deg();
 }
 
 void loop()
@@ -105,3 +114,21 @@ void turnLeft() {
   stepperR.setSpeed(-SPEED * deccelerateSpeed);
 }
 
+void turnLeft90deg() {
+  stopMotors();
+  stepperR.setSpeed(300);
+  stepperR.moveTo(3000);
+  stepperR.runToPosition();
+}
+
+void stopMotors(){
+  stepperL.setSpeed(0);
+  stepperR.setSpeed(0);
+}
+
+void turnRight90deg() {
+  stopMotors();
+  stepperL.setSpeed(300);
+  stepperL.moveTo(3000);
+  stepperL.runToPosition();
+}
