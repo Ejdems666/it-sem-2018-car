@@ -8,79 +8,41 @@ Servo myservo; // create servo object to control a servo
 
 void setup() {
 
-// initialize serial communication:
-
-Serial.begin(9600);
-
-myservo.attach(9); // attaches the servo on pin 9 to the servo object
+  // initialize serial communication:
+  
+  Serial.begin(9600);
+  pinMode(trigPin, OUTPUT);
+  pinMode(echoPin, INPUT);
+  
+  myservo.attach(9); // attaches the servo on pin 9 to the servo object
+  myservo.write(90);
 
 }
 
 void loop() {
 
-// and the distance result in centimeters:
-
-long duration, cm;
-
-pinMode(trigPin, OUTPUT);
-
-digitalWrite(trigPin, LOW);
-
-delayMicroseconds(2);
-
-digitalWrite(trigPin, HIGH);
-
-delayMicroseconds(20);
-
-digitalWrite(trigPin, LOW);
-
-pinMode(echoPin, INPUT);
-
-duration = pulseIn(echoPin, HIGH);
-
-// convert the time into a distance
-
-cm = microsecondsToCentimeters(duration);
-
-// the condition for the distance
-
-if ( cm > 7 && cm < 14)
-
-{
-
-myservo.write(140); // sets the servo position according to the scaled value
-
-delay(4000);
-
-}
-
-else if ( cm < 8)
-
-{
-
-myservo.write(40); // sets the servo position according to the scaled value
-
-delay(100);
-
-}
-
-else
-
-{
-
-myservo.write(40); // sets the servo position according to the scaled value
-
-delay(100);
-
-}
-
-Serial.print(cm);
-
-Serial.print("cm");
-
-Serial.println();
-
-delay(100);
+  // and the distance result in centimeters:
+  long cm = measure();
+  
+  if ( cm < 15){
+    myservo.write(180); // sets the servo position according to the scaled value
+    delay(4000);
+    cm = measure();
+    if (cm < 15){
+      myservo.write(0); // sets the servo position according to the scaled value
+      delay(4000);
+  }
+  myservo.write();
+  
+  
+  
+  Serial.print(cm);
+  
+  Serial.print("cm");
+  
+  Serial.println();
+  
+  delay(100);
 
 }
 
@@ -94,4 +56,24 @@ long microsecondsToCentimeters(long microseconds) {
 
 return microseconds / 29 / 2;
 
+}
+
+long measure() {
+  long duration, cm;
+  
+  digitalWrite(trigPin, LOW);
+  
+  delayMicroseconds(2);
+  
+  digitalWrite(trigPin, HIGH);
+  
+  delayMicroseconds(20);
+  
+  digitalWrite(trigPin, LOW);
+
+  duration = pulseIn(echoPin, HIGH);
+  
+  // convert the time into a distance
+  
+  return microsecondsToCentimeters(duration);  
 }
