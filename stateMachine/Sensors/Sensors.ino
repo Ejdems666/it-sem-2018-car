@@ -23,7 +23,7 @@ int ledL = 10;
 int ledR = 11;
 
 int state = 0;
-
+boolean stoppedAtWall 
 int checkState() {
 
   bool sensorR = analogRead(photoSensorR)<= thresholdR;
@@ -40,18 +40,8 @@ int checkState() {
   } else if (sensorL){
     return 3;
   } else {
-    Serial.println("Inside ultrasonic else");
     if (straightIsBlocked()){
       return 6;
-      if (leftIsBlocked()) {
-        Serial.println("going right");
-        myservo.write(90);
-        return 5;
-      } else {
-        Serial.println("going left");
-        myservo.write(90); 
-        return 4;
-      }
     } else
       Serial.println("going straight");
       myservo.write(90); 
