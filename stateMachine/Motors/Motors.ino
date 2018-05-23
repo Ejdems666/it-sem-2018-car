@@ -129,6 +129,7 @@ void stopMotors(){
 void turnRight90deg() {
   stopMotors();
   stepperL.setSpeed(300);
-  stepperL.moveTo(3000);
-  stepperL.runToPosition();
+  stepperL.moveTo(1400);
+  stepperL.runSpeedToPosition();
+  Serial.println("Done turning");
 }
