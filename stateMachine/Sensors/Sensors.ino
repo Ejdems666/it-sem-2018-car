@@ -42,6 +42,15 @@ int checkState() {
   } else {
     if (straightIsBlocked()){
       return 6;
+      if (leftIsBlocked()) {
+        Serial.println("going right");
+        myservo.write(90);
+        return 5;
+      } else {
+        Serial.println("going left");
+        myservo.write(90); 
+        return 4;
+      }
     } else
       Serial.println("going straight");
       myservo.write(90); 
